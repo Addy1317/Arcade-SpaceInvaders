@@ -12,6 +12,10 @@ namespace SlowpokeStudio.ArcadeSpaceInvaders
 
         [Header("Move Speed")]
         [SerializeField] private AnimationCurve _speed;
+        [SerializeField] private float _missileAttackRate = 1.0f;
+
+        [Header("Missile")]
+        [SerializeField] private Projectile _missilePrefab;
 
         [Header("Invaders Prefab")]
         [SerializeField] private Invader[] _invaderPrefabs;
@@ -24,9 +28,16 @@ namespace SlowpokeStudio.ArcadeSpaceInvaders
 
         public float percentKilled => (float)this.amountKilled / (float)this.totalInvaders;
 
+        public int amountAlive => this.totalInvaders - this.amountKilled;
+
         private void Awake()
         {
             InvadersSpawning();
+        }
+
+        private void Start()
+        {
+            InvokeRepeating(nameof(MissielAttack),this._missileAttackRate,this._missileAttackRate);
         }
 
         private void Update()
@@ -90,7 +101,23 @@ namespace SlowpokeStudio.ArcadeSpaceInvaders
 
         private void InvaderKilled()
         {
+            this.amountKilled++;
+        }
 
+        private void MissielAttack()
+        {
+            foreach (Transform invader in this.transform)
+            {
+                if(!invader.gameObject.activeInHierarchy)
+                {
+                    continue;
+                }
+                if(Random.value < (1.0f / (float)this.amountAlive))
+                {
+                    Instantiate(this._missilePrefab, invader.position, Quaternion.identity);
+                    break;
+                }
+            }
         }
     }
 }
