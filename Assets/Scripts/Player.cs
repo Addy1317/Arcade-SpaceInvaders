@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace SlowpokeStudio.ArcadeSpaceInvaders
 {
@@ -46,6 +47,14 @@ namespace SlowpokeStudio.ArcadeSpaceInvaders
                Projectile projectile =  Instantiate(this._laserPrefab, this.transform.position, Quaternion.identity);
                 projectile.destroyed += LaserDestroyed; 
                 _laserActive = true;
+            }
+        }
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            if(other.gameObject.layer == LayerMask.NameToLayer("Invader") || other.gameObject.layer == LayerMask.NameToLayer("Missile"))
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
         }
 
