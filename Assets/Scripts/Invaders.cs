@@ -7,16 +7,22 @@ namespace SlowpokeStudio.ArcadeSpaceInvaders
     public class Invaders : MonoBehaviour
     {
         [Header("Rows and Columns")]
-        [SerializeField] private int _rows;
-        [SerializeField] private int _columns;
+        [SerializeField] private int _rows = 5;
+        [SerializeField] private int _columns = 11;
 
         [Header("Move Speed")]
-        [SerializeField] private float _speed = 1.0f;
+        [SerializeField] private AnimationCurve _speed;
 
         [Header("Invaders Prefab")]
         [SerializeField] private Invader[] _invaderPrefabs;
 
         private Vector3 _direction = Vector2.right;
+
+        public int amountKilled { get; private set; }
+
+        public int totalInvaders => this._rows * this._columns;
+
+        public float percentKilled => (float)this.amountKilled / (float)this.totalInvaders;
 
         private void Awake()
         {
@@ -40,6 +46,7 @@ namespace SlowpokeStudio.ArcadeSpaceInvaders
                 for (int col = 0; col < this._columns; col++)
                 {
                     Invader invader = Instantiate(this._invaderPrefabs[row], this.transform);
+                    invader.killed += InvaderKilled;
                     Vector3 position = rowPosition;
                     position.x += col * 2.0f;
                     invader.transform.localPosition = position;
@@ -49,7 +56,7 @@ namespace SlowpokeStudio.ArcadeSpaceInvaders
 
         private void InvadersMovement()
         {
-            this.transform.position += _direction * this._speed * Time.deltaTime;
+            this.transform.position += _direction * this._speed.Evaluate(this.percentKilled) * Time.deltaTime;
 
             Vector3 leftEdge = Camera.main.ViewportToWorldPoint(Vector3.zero);
             Vector3 rightEdge = Camera.main.ViewportToWorldPoint(Vector3.right);
@@ -79,6 +86,11 @@ namespace SlowpokeStudio.ArcadeSpaceInvaders
             Vector3 position = this.transform.position;
             position.y -= 1.0f;
             this.transform.position = position;
+        }
+
+        private void InvaderKilled()
+        {
+
         }
     }
 }

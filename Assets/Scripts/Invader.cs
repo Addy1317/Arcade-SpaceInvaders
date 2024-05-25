@@ -13,6 +13,8 @@ namespace SlowpokeStudio.ArcadeSpaceInvaders
         private SpriteRenderer _spriteRenderer;
         private int _animationFrame;
 
+        public System.Action killed;
+
         private void Awake()
         {
             _spriteRenderer = GetComponent<SpriteRenderer>();
@@ -33,6 +35,15 @@ namespace SlowpokeStudio.ArcadeSpaceInvaders
             }
 
             _spriteRenderer.sprite = this._animateSprites[_animationFrame];
+        }
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            if(other.gameObject.layer == LayerMask.NameToLayer("Laser"))
+            {
+                this.killed.Invoke();
+                this.gameObject.SetActive(false);
+            }
         }
     }
 }

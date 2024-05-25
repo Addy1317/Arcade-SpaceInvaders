@@ -1098,7 +1098,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rows: 5
   _columns: 11
-  _speed: 1
+  _speed:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.25
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 8
+      inSlope: 12.101177
+      outSlope: 12.101177
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.052054048
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   _invaderPrefabs:
   - {fileID: 2538641383273439894, guid: d8afa8304e8f44e4486f15191a0d41e6, type: 3}
   - {fileID: 2538641383273439894, guid: d8afa8304e8f44e4486f15191a0d41e6, type: 3}
